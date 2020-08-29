@@ -1,0 +1,66 @@
+/* style.css */
+@charset "utf-8";
+
+*{
+	margin: 0;
+	padding: 0;
+}
+body{
+	-webkit-text-size-adjust: none;	/* iPhoneのSafariで左上が拡大されて表示される場合の対処 */
+	font-family: 'メイリオ', Helvetica;
+	font-size: 16pt;
+	width: 100%;
+	margin: 0 auto;
+}
+header{
+	padding: 1em;
+	background-color: teal;
+}
+header h1{
+	font-size: 16pt;
+	text-align: center;
+	color: white;
+}
+#contents{
+	background-color: white;
+	text-align: center;
+}
+#number{
+	padding: 1em 0;
+	font-family: Impact, Helvetica;
+	font-weight: 900;
+	font-size: 64pt;
+}
+p{
+	font-size: 12pt;
+}
+a{
+	text-decoration: none;
+}
+footer{
+	font-size: 0.8em;
+	padding: 1em;
+	text-align: center;
+}
+
+@media screen and (min-width: 768px) and (max-width: 1024px) {
+ 
+    /* タブレット用のcssを記述 */
+	header h1{
+		font-size: 20pt;
+	}
+	#contents{
+		background-color: white;
+		text-align: center;
+	}
+	#number{
+		padding: 1em 0;
+		font-family: Impact, Helvetica;
+		font-weight: 900;
+		font-size: 128pt;
+	}
+	p{
+		font-size: 18pt;
+	}
+ 
+}
