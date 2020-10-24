@@ -1,4 +1,4 @@
-<script type="text/javascript">
+'use strict';
 counter();
 
 function counter() {
@@ -55,4 +55,3 @@ function saveCookie(c_name,c_data,c_day) {
 	//cookieの書き出し
 	document.cookie = c_name + "=" + escape(c_data) + "; expires=" + c_limit;
 }
-</script>
