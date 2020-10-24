@@ -1,5 +1,3 @@
-Counter : <span id="countnumber"></span>
-
 <script type="text/javascript">
 counter();
 
