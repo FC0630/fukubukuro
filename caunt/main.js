@@ -1,107 +1,60 @@
-var n;													// 数値格納用
-var number;											// 数値表示部分のDOM取得用						
-const STORAGE_KEY = "COUNTER";		// ローカルストレージキー
+Counter : <span id="countnumber"></span>
 
-/*
- * スワイプイベント設定
- */
-function setSwipe(elem) {
-	let t = document.querySelector(elem);
-	let startX;		// タッチ開始 x座標
-	let startY;		// タッチ開始 y座標
-	let moveX;	// スワイプ中の x座標
-	let moveY;	// スワイプ中の y座標
-	let dist = 30;	// スワイプを感知する最低距離（ピクセル単位）
-	
-	// タッチ開始時： xy座標を取得
-	t.addEventListener("touchstart", function(e) {
-		e.preventDefault();
-		startX = e.touches[0].pageX;
-		startY = e.touches[0].pageY;
-	});
-	
-	// スワイプ中： xy座標を取得
-	t.addEventListener("touchmove", function(e) {
-		e.preventDefault();
-		moveX = e.changedTouches[0].pageX;
-		moveY = e.changedTouches[0].pageY;
-	});
-	
-	// タッチ終了時： スワイプした距離から左右どちらにスワイプしたかを判定する/距離が短い場合何もしない
-	t.addEventListener("touchend", function(e) {
-		if (startX > moveX && startX > moveX + dist) {		// 右から左にスワイプ
-			sub();	// 数値を－１する
-		}
-		else if (startX < moveX && startX + dist < moveX) {	// 左から右にスワイプ
-			add();			// 数値を＋１する
-		}
-	});
-}
+<script type="text/javascript">
+counter();
 
-/*
- * ローカルストレージチェックし、前回最後に表示していた数値データを取得
- */
-function checkStorageKey(){
-	// ローカルストレージチェック
-	let ret = localStorage.getItem(STORAGE_KEY);
-	console.log("保存状態: " + ret);
-	
-	// キーが存在するかのチェック
-	if(ret !== null){		// 戻り値がnull：保存データあり
-		n = Number(ret);	// 数値化して変数に代入（ローカルストレージデータは文字列のため計算できるようにする）
+function counter() {
+	var c_name,count;
+	//cookie名
+	c_name = "cookie_count";
+
+	//cookieの読込
+	count = loadCookie(c_name);
+	if (count == "") {
+		//データがない場合
+		count = 1;
+	} else {
+		//データがある場合
+		count++;
 	}
-	else{						// 戻り値が存在：保存データなし
-		n = 0;					// 0を代入
+
+	//countを表示
+	document.getElementById("countnumber").innerHTML = count;
+	
+	//cookieの保存
+	saveCookie(c_name,count,60);
+}
+
+//cookie読込
+function loadCookie(c_name) {
+	var s,n,m,c_data;
+	//cookieの読み込み
+	c_data = document.cookie;
+	//cookie名
+	c_name = c_name + "=";
+	//有効なcookie名を調べる
+	n = c_data.indexOf(c_name,0);
+	if (n > -1) {
+		//cookieのデータ部分を取り出す
+		m = c_data.indexOf(";",n + c_name.length);
+		if (m == -1) m = c_data.length;
+		s = c_data.substring(n + c_name.length,m);
+		//デコード
+		return unescape(s);
+	} else {
+		return "";
 	}
-	console.log("n = " + n);
 }
 
-/*
- * ローカルストレージに現在表示中の番号を保存
- */
-function setStorageKey(){
-	localStorage.setItem(STORAGE_KEY, n);
+//cookie保存
+function saveCookie(c_name,c_data,c_day) {
+	var n,c_date,c_limit;
+	//有効期限
+	c_date = new Date(); 
+	n = c_date.getTime() + (1000*60*60*24*c_day);
+	c_date.setTime(n); 
+	c_limit = c_date.toGMTString();
+	//cookieの書き出し
+	document.cookie = c_name + "=" + escape(c_data) + "; expires=" + c_limit;
 }
-
-/*
- * 数値を＋１する
- */
-function add(){
-	n ++;
-	setNumber();	// 表示とローカルストレージ保存
-}
-
-/*
- * 数値を－１する
- */
-function sub(){
-	n --;
-	setNumber();	// 表示とローカルストレージ保存
-}
-
-/*
- * 数値を画面に表示後、ローカルストレージに保存
- */
-function setNumber(){
-	// 数値を表示
-	number.innerHTML = n;
-	// ストレージに表示中の数値を保存
-	setStorageKey();
-}
-
-/*
- * 起動時の処理
- */
-window.addEventListener("load", function(){
-	// 数値表示部分のDOM取得
-	number = document.getElementById("number");
-		
-	// ローカルストレージをチェック
-	checkStorageKey();
-
-	// 数値を画面に表示
-	setNumber();
-
-	// スワイプイベント設定
-	setSwipe("#contents");
-});
+</script>
